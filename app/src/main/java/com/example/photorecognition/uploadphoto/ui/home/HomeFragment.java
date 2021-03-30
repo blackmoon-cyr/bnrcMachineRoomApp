@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
         modify_bt = root.findViewById(R.id.modify_button);
         upload_bt = root.findViewById(R.id.upload_button);
         spinner_list=root.findViewById(R.id.spinner1);
-        mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
+//        mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
         mPhotoPath=Environment.getExternalStorageDirectory()  + "/Tmp_photo.jpeg";
         init();
 //        mTempPhotoPath= savePicToSdcard(image,Environment.getExternalStorageDirectory().getPath(),System.currentTimeMillis() + ".jpg");
@@ -159,6 +159,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
 
 
+                Log.d(TAG, "mTempPhotoPath " + mTempPhotoPath);
                 String base64_image=imageToBase64(mTempPhotoPath);
                 base64_image = "data:image/jpeg;base64," + base64_image;
                 String urlPath = "http://117.114.240.111:9999/machineRoomManage-1.0-SNAPSHOT/device/uploadNew";
@@ -292,7 +293,7 @@ public class HomeFragment extends Fragment {
     private void displayImage(String imagePath){
         if(imagePath!=null){
             Bitmap bitmap = BitmapFactory.decodeFile((imagePath));
-            qualityCompress(bitmap,new File(mPhotoPath));
+//            qualityCompress(bitmap,new File(mPhotoPath));
             photo_iv.setImageBitmap(bitmap);
         }else{
             Toast.makeText(getActivity(),"failed to get image",Toast.LENGTH_SHORT).show();
@@ -312,10 +313,12 @@ public class HomeFragment extends Fragment {
                     Uri uri=data.getData();
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                        qualityCompress(bitmap,new File(mPhotoPath));
+//                        qualityCompress(bitmap,new File(mPhotoPath));
                         photo_iv.setImageBitmap(bitmap);
                         if(uri!=null){
-                            mTempPhotoPath=RealPathFromUriUtils.getRealPathFromUri(getContext(), data.getData());
+//                            mTempPhotoPath=RealPathFromUriUtils.getRealPathFromUri(getContext(), data.getData());
+                            mTempPhotoPath = FileUtil.getFilePathByUri(getContext(), uri);
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -602,6 +605,11 @@ public class HomeFragment extends Fragment {
 
         }
     }
+
+
+
+
+
 
 
 
